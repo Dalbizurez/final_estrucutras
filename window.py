@@ -1,6 +1,6 @@
 from UI.main_window import Ui_MainWindow
 from PyQt6.QtWidgets import QMainWindow
-from arbol import Tree, binary_search, inorder
+from arbol import Tree, binary_search, inorder, delete
 from graph import tree_g
 from PyQt6.QtGui import QPixmap, QIcon
 
@@ -37,6 +37,10 @@ class Window(QMainWindow, Ui_MainWindow):
         self.btn_guardar.clicked.connect(self.guardar_estudiante)
         self.btn_buscar.clicked.connect(self.buscar_estudiante)
 
+        self.btn_eliminar.setEnabled(True)
+        self.btn_eliminar.clicked.connect(self.eliminar_estudiante)
+
+
         self.btn_guardar.clicked.connect(self.update_graph)
         self.btn_eliminar.clicked.connect(self.update_graph)
     
@@ -60,3 +64,9 @@ class Window(QMainWindow, Ui_MainWindow):
             self.txt_nombre.setText("Estudiante en el arbol")
         else:
             self.txt_nombre.setText("Estudiante no en el arbol")
+
+    def eliminar_estudiante(self):
+        id = self.spn_id.value()
+        if binary_search(Student(id, None, None), self.tree.root, id):
+            delete(id, self.tree.root)
+            self.update_graph()

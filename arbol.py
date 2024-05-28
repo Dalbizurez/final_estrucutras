@@ -34,6 +34,26 @@ class Tree:
             else:
                 node.right = Node(value, key)
 
+def delete(key, node):
+    if not node:
+        return
+    if key < node.key:
+        node.left = delete(key, node.left)
+    elif key > node.key:
+        node.right = delete(key, node.right)
+    else:
+        if not node.left:
+            return node.right
+        if not node.right:
+            return node.left
+        temp = node.right
+        while temp.left:
+            temp = temp.left
+        node.key = temp.key
+        node.data = temp.data
+        node.right = delete(temp.key, node.right)
+    return node
+
 def binary_search(value, node:Node, key = -1):
     if not node: 
         return False
